@@ -8,7 +8,7 @@ Workshop for RLadies Boulder on spatial data and mapping in R. Points to cover:
 3. Work through some advanced mapping techniques to show the range of versatility of mapping in R. There are plenty of examples online that offer a few cookie cutter ways to map your data basically, but showing some cool expansions or extra features that are harder to find would be a good use of time  
 
 ##### Spatial data  
-* sp vs st packages
+* sp vs sf packages
 * file naming conventions. either personal or as a team. make a guide
 * how to share QGIS data? hard to say
 * reference that if you're using remote sensing data, use L0, L1, etc. naming convention. 

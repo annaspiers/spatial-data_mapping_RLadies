@@ -17,6 +17,7 @@ Workshop for RLadies Boulder on spatial data and mapping in R. Points to cover:
 * recommended to do analysis in UTM, but mapping in WGS84 (e.g. tmap requires WGS84)
 * Resources:
   * https://cengel.github.io/rspatial/2_spDataTypes.nb.html
+  * https://www.nceas.ucsb.edu/sites/default/files/2020-04/OverviewCoordinateReferenceSystems.pdf
 
 ##### Mapping
 * interactive maps (tmap, leaflet). Reference CU Boulder libraries uide

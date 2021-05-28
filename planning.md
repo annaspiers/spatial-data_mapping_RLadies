@@ -21,3 +21,5 @@ Workshop for RLadies Boulder on spatial data and mapping in R. Points to cover:
 ##### Mapping
 * interactive maps (tmap, leaflet). Reference CU Boulder libraries uide
 
+##### Relevant topics that I will not cover
+* conversion from proj4 to ?? - when and why?

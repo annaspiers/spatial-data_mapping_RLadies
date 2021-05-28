@@ -24,3 +24,20 @@ Workshop for RLadies Boulder on spatial data and mapping in R. Points to cover:
 ##### Relevant topics that I will not cover
 * conversion from proj4 to ?? - when and why?
 * working with Raster data (this will involve only vector data)
+
+
+
+
+What is spatial data?
+Spatial packages in R (specifically sp and sf and when they do/don't interact)
+How to know what CRS to use?
+interactive maps in R (tmap, leaflet)
+if something isn't working with your spatial data, how to troubleshoot? (make a checklist throughout workshop to give them at the end - always ask stackoverflow and make spatial friends)
+best practices in storing data (save large data files locally)
+
+(1) Talk about what falls into the category of spatial data
+(2) Background of the workflow conceptually from CSV to map (no R code yet)
+(3) Relevant packages
+(4) Basics of converting CSVs to shapefiles etc. and why
+(5) Once the data is in working order, very brief basics of mapping 
+(6) Cool examples of the range of versatility, harder to find stuff, maybe some sticking points that took you a while to work through and the solution.

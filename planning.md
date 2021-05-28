@@ -23,3 +23,4 @@ Workshop for RLadies Boulder on spatial data and mapping in R. Points to cover:
 
 ##### Relevant topics that I will not cover
 * conversion from proj4 to ?? - when and why?
+* working with Raster data (this will involve only vector data)

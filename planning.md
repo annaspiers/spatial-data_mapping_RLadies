@@ -8,9 +8,11 @@ Workshop for RLadies Boulder on spatial data and mapping in R. Points to cover:
 3. Work through some advanced mapping techniques to show the range of versatility of mapping in R. There are plenty of examples online that offer a few cookie cutter ways to map your data basically, but showing some cool expansions or extra features that are harder to find would be a good use of time  
 
 ##### Spatial data  
-* sp vs sf packages
-* file naming conventions. either personal or as a team. make a guide
-* how to share QGIS data? hard to say
+* What is spatial data?
+ * different types of spatial data... raster, vector, what else?
+ * we'll work with vectors today, following the use case where you have coordinates of field sites in an ecological application, municipalities in a political analysis, or (what's another example? psychological?)
+* sp vs sf packages (when they do/don't they interact)
+
 * reference that if you're using remote sensing data, use L0, L1, etc. naming convention. 
 * CRS
 * recent move from proj4 to prO(theta)4
@@ -18,6 +20,8 @@ Workshop for RLadies Boulder on spatial data and mapping in R. Points to cover:
 * Resources:
   * https://cengel.github.io/rspatial/2_spDataTypes.nb.html
   * https://www.nceas.ucsb.edu/sites/default/files/2020-04/OverviewCoordinateReferenceSystems.pdf
+*
+* file naming conventions. either personal or as a team. make a guide
 
 ##### Mapping
 * interactive maps (tmap, leaflet). Reference CU Boulder libraries uide
@@ -25,12 +29,13 @@ Workshop for RLadies Boulder on spatial data and mapping in R. Points to cover:
 ##### Relevant topics that I will not cover
 * conversion from proj4 to ?? - when and why?
 * working with Raster data (this will involve only vector data)
+* QGIS stuff... how to share QGIS data? 
 
 
 
 
-What is spatial data?
-Spatial packages in R (specifically sp and sf and when they do/don't interact)
+
+...
 How to know what CRS to use?
 interactive maps in R (tmap, leaflet)
 if something isn't working with your spatial data, how to troubleshoot? (make a checklist throughout workshop to give them at the end - always ask stackoverflow and make spatial friends)

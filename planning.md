@@ -14,7 +14,7 @@ Outline
   * **what falls into this category?**
   * examples: field sites, rivers, county boundries, elevation maps, point clouds, ...
   * each of these fall into a different bucket... (visualize a circle around examples grouped by raster (2d), vector(1d), spatial point clouds(3d)) 
-  * we'll work with vectors (1d)today
+  * we'll work with vectors (1d) today
     * points (field sites), lines (rivers), polygons (county boudnaries)
     * following the use case where you have coordinates of field sites in an ecological application, municipalities in a political analysis, or (what's another example? psychological?)
  * format of spatial data 
@@ -34,6 +34,7 @@ Outline
     * first released on CRAN in 2005
     * offers functionality to create and modify vector data and grids
     * many (about 350) of R's spatial packages use `sp` as a dependency
+    * 
   * `sf`
     * first released on CRAN in ???
 
@@ -46,6 +47,12 @@ Outline
 
 
 ##### Mapping
+* geojson.io or google earth - use to extract polygons or lines
+* https://www.vdatum.noaa.gov/ - if you need a niche CRS
+* view raster data: see what scott sent
+* view point cloud data: website from Leah's lesson
+
+
 * So you have a csv of coordinates, what do you do?: 
   * convert to shp/kml - **Basics of converting CSVs to shapefiles etc. and why**
   * but what CRS? 

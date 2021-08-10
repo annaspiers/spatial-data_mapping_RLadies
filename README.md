@@ -1,5 +1,5 @@
 # spatial-data_mapping_RLadies
-Materials for workshop on spatial data and mapping in R for RLadies Boulder on 8 June 2021
+Materials for workshop on spatial data and mapping in R for RLadies Boulder on 10 August 2021
 
 RLadies advertisement:   
 ***From csv to slippy map: intro to spatial data in R***  

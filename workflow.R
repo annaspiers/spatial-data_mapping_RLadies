@@ -1,12 +1,12 @@
+# Csv to slippy workflow as R script
+
 library(sp)
 library(sf)
 library(rgdal) #readOGR()
 library(tmap)
-#library(readr) #read_csv
 library(raster) #crs()
-#library(dplyr)
-#library(tidyverse)
-#library(ggplot2)
+library(tmaptools) #read_osm()
+library(OpenStreetMap) #read_osm()
 
 # Load field sites
 sites <- read.csv("data/example_sites_WGS84.csv")
@@ -60,7 +60,9 @@ tm_shape(frags_sf_reproj) +
         tm_borders("lightblue", lwd=2) +
     tm_shape(sites_sf) +
        tm_dots(col="place")
+# Note the word bubbles that pop up when you click on a spatial object
 
+# You can control what text appears in the word bubble. See the popup.vars variable below
 tm_shape(frags_sf_reproj) +
         tm_fill(alpha=0,
                    popup.vars=c("Size: "="size",
@@ -72,16 +74,16 @@ tm_shape(frags_sf_reproj) +
 
 # Hover over fragments. It displays the size. 
 # If you want to change which attribute is displayed in the hover bubble, then change the order of attributes in the spatial object
-frags_sf_reproj <- frags_sf_reproj[ , c("rep", "size", "geometry")]    
+frags_sf_reproj <- frags_sf_reproj[ , c("rep", "size", "geometry")]  
 
-# Try another backdrop. There are many to choose from 
 tm_shape(frags_sf_reproj) +
         tm_fill(alpha=0) +
         tm_borders("lightblue", lwd=2) +
     tm_shape(sites_sf) +
-       tm_dots(col="place") 
+       tm_dots(col="place")
+# Now replicate number displays in hover bubble over fragment polygon
 
-# Try satellite backdrop
+# Try a satellite backdrop. 
 tm_shape(frags_sf_reproj) +
         tm_fill(alpha=0) +
         tm_borders("lightblue", lwd=2) +
@@ -89,10 +91,34 @@ tm_shape(frags_sf_reproj) +
        tm_dots(col="place") +
     tm_basemap(providers$Esri.WorldImagery)
 
+# Try a topographic map backdrop. There are many to choose from 
+tm_shape(frags_sf_reproj) +
+        tm_fill(alpha=0) +
+        tm_borders("lightblue", lwd=2) +
+    tm_shape(sites_sf) +
+       tm_dots(col="place") +
+    tm_basemap(providers$Esri.WorldTopoMap)
+
 # Save as html
 tmap_last() %>% 
     tmap_save("figures/wogwog_esribackdrop.html")
 
 
+# EXTRA: Plot a map with your own raster backdrop (swap in your own raster file below)
+ortho_blue <- raster("data/20190216_233616_101f_3B_AnalyticMS_clip.tif",band=1)
+ortho_green <- raster("data/20190216_233616_101f_3B_AnalyticMS_clip.tif",band=2)
+ortho_red <- raster("data/20190216_233616_101f_3B_AnalyticMS_clip.tif",band=3)
+ortho_brick <- brick(ortho_red, ortho_green, ortho_blue)
+plotRGB(ortho_brick, r=1, g=2, b=3)
 
-# You can customize the backdrop in case you have a higher resolution orthomosaic of your site  
+# Reproject from UTM Zone 55S to WGS 84
+ortho_4326 <- projectRaster(ortho_brick, crs="+init=epsg:4326", method = "ngb")  
+ortho_background <- read_osm(bbox(ortho_4326))
+
+tm_shape(ortho_background) + 
+        tm_raster() +
+    tm_shape(frags_sf_reproj) + 
+        tm_fill(alpha=0) +
+        tm_borders("lightblue", lwd=2) +
+    tm_shape(sites_sf) + 
+       tm_dots(col="place") 

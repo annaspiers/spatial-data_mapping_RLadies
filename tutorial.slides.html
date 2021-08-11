@@ -14386,10 +14386,10 @@ div.jp-OutputPrompt {
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="From-csv-to-slippy-map:-Intro-to-spatial-data-in-R">From csv to slippy map: Intro to spatial data in R<a class="anchor-link" href="#From-csv-to-slippy-map:-Intro-to-spatial-data-in-R">&#182;</a></h1><p>Anna Spiers, CU Boulder<br>
-08 June 2021
+10 August 2021
 R Ladies Boulder Chapter Meetup</p>
 <p><img src="figures/schneider-et-al-2017.png" alt="schneider-et-al-2017">
-Schneider et al. 217, <em>Nat Comm</em></p>
+Schneider et al. 2017, <em>Nat Comm</em></p>
 
 </div>
 </div></section></section><section><section>
@@ -14441,6 +14441,12 @@ Schneider et al. 217, <em>Nat Comm</em></p>
 </div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Vector-data">Vector data<a class="anchor-link" href="#Vector-data">&#182;</a></h3><p><img src="figures/uscounties.png" alt="wogwog"></p>
+
+</div>
+</div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Vector-data">Vector data<a class="anchor-link" href="#Vector-data">&#182;</a></h3><ul>
 <li>We will work with vector data in this tutorial </li>
 <li>Data types:<ul>
@@ -14457,8 +14463,8 @@ Schneider et al. 217, <em>Nat Comm</em></p>
 <li>Many more file types, but we'll stop here</li>
 </ul>
 </li>
-<li>We will work with shapefiles.
-<strong>AIS another image of the vector data examples</strong></li>
+<li>We will work with shapefiles.</li>
+<li>Attributes are metadata associated with each spatial object</li>
 </ul>
 
 </div>
@@ -14517,7 +14523,7 @@ Schneider et al. 217, <em>Nat Comm</em></p>
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
@@ -14525,6 +14531,7 @@ Schneider et al. 217, <em>Nat Comm</em></p>
 <span class="nf">library</span><span class="p">(</span><span class="n">rgdal</span><span class="p">)</span> <span class="c1">#readOGR()</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">raster</span><span class="p">)</span> <span class="c1">#crs()</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">tmap</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">geojsonio</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14532,19 +14539,17 @@ Schneider et al. 217, <em>Nat Comm</em></p>
 </div>
 </div>
 
-</div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_remove-output">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="c1"># Load csv</span>
 <span class="n">sites</span> <span class="o">&lt;-</span> <span class="nf">read.csv</span><span class="p">(</span><span class="s">&quot;data/example_sites_WGS84.csv&quot;</span><span class="p">)</span>
-<span class="n">sites_sf</span> <span class="o">&lt;-</span> <span class="n">sf</span><span class="o">::</span><span class="nf">st_as_sf</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;lon&quot;</span><span class="p">,</span> <span class="s">&quot;lat&quot;</span><span class="p">))</span>
-<span class="nf">st_crs</span><span class="p">(</span><span class="n">sites_sf</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="m">4326</span>
-<span class="nf">head</span><span class="p">(</span><span class="n">sites_sf</span><span class="p">)</span>
 
-<span class="c1"># how to suppress errors?</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">sites</span><span class="p">)</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">sites</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14563,39 +14568,88 @@ Schneider et al. 217, <em>Nat Comm</em></p>
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>ERROR while rich displaying an object: Error in loadNamespace(x): there is no package called ‘geojsonio’
 
-Traceback:
-1. FUN(X[[i]], ...)
-2. tryCatch(withCallingHandlers({
- .     if (!mime %in% names(repr::mime2repr)) 
- .         stop(&#34;No repr_* for mimetype &#34;, mime, &#34; in repr::mime2repr&#34;)
- .     rpr &lt;- repr::mime2repr[[mime]](obj)
- .     if (is.null(rpr)) 
- .         return(NULL)
- .     prepare_content(is.raw(rpr), rpr)
- . }, error = error_handler), error = outer_handler)
-3. tryCatchList(expr, classes, parentenv, handlers)
-4. tryCatchOne(expr, names, parentenv, handlers[[1L]])
-5. doTryCatch(return(expr), name, parentenv, handler)
-6. withCallingHandlers({
- .     if (!mime %in% names(repr::mime2repr)) 
- .         stop(&#34;No repr_* for mimetype &#34;, mime, &#34; in repr::mime2repr&#34;)
- .     rpr &lt;- repr::mime2repr[[mime]](obj)
- .     if (is.null(rpr)) 
- .         return(NULL)
- .     prepare_content(is.raw(rpr), rpr)
- . }, error = error_handler)
-7. repr::mime2repr[[mime]](obj)
-8. repr_geojson.sf(obj)
-9. repr_geojson(geojsonio::geojson_list(obj), ...)
-10. loadNamespace(x)
-11. withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-12. withOneRestart(expr, restarts[[1L]])
-13. doWithOneRestart(return(expr), restart)
-</pre>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+'data.frame'
 </div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<table class="dataframe">
+<caption>A data.frame: 6 × 6</caption>
+<thead>
+	<tr><th></th><th scope=col>name</th><th scope=col>lon</th><th scope=col>lat</th><th scope=col>rep</th><th scope=col>size</th><th scope=col>place</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>1Sout</td><td>149.4607</td><td>-37.05740</td><td>1</td><td>S</td><td>out</td></tr>
+	<tr><th scope=row>2</th><td>1Lin </td><td>149.4594</td><td>-37.05986</td><td>1</td><td>L</td><td>in </td></tr>
+	<tr><th scope=row>3</th><td>1Lout</td><td>149.4576</td><td>-37.06033</td><td>1</td><td>L</td><td>out</td></tr>
+	<tr><th scope=row>4</th><td>2Sin </td><td>149.4637</td><td>-37.06050</td><td>2</td><td>S</td><td>in </td></tr>
+	<tr><th scope=row>5</th><td>2Sout</td><td>149.4648</td><td>-37.06004</td><td>2</td><td>S</td><td>out</td></tr>
+	<tr><th scope=row>6</th><td>2Min </td><td>149.4635</td><td>-37.06196</td><td>2</td><td>M</td><td>in </td></tr>
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-r"><pre><span></span><span class="c1"># Convert to `sf` spatial object </span>
+<span class="n">sites_sf</span> <span class="o">&lt;-</span> <span class="n">sf</span><span class="o">::</span><span class="nf">st_as_sf</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;lon&quot;</span><span class="p">,</span> <span class="s">&quot;lat&quot;</span><span class="p">))</span>
+
+<span class="c1"># Assign coordinate reference system </span>
+<span class="nf">st_crs</span><span class="p">(</span><span class="n">sites_sf</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="m">4326</span> <span class="c1">#epsg code for WGS84</span>
+
+<span class="nf">class</span><span class="p">(</span><span class="n">sites_sf</span><span class="p">)</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">sites_sf</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>'sf'</li><li>'data.frame'</li></ol>
+
+</div>
+
 </div>
 
 <div class="jp-OutputArea-child">
@@ -14633,12 +14687,13 @@ Traceback:
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="c1"># Load fragment boundaries (already a shp) through sp and sf packages</span>
+<div class=" highlight hl-r"><pre><span></span><span class="c1"># Load fragment boundaries (already a shp) through `sp` and `sf` packages</span>
 <span class="n">frags_sp</span> <span class="o">&lt;-</span> <span class="nf">readOGR</span><span class="p">(</span><span class="s">&quot;data/example_frag_outlines_UTM&quot;</span><span class="p">)</span>
 <span class="n">frags_sf</span> <span class="o">&lt;-</span> <span class="nf">st_read</span><span class="p">(</span><span class="s">&quot;data/example_frag_outlines_UTM&quot;</span><span class="p">)</span>
+<span class="c1">#AIS clear output from this cell in final runthrough</span>
 </pre></div>
 
      </div>
@@ -14680,12 +14735,14 @@ Projected CRS: WGS 84 / UTM zone 55S
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="n">frags_sp</span>
-<span class="n">frags_sf</span>
-<span class="c1">#AIS suppress warning output</span>
+<div class=" highlight hl-r"><pre><span></span><span class="c1"># Compare class types for `sp` and `sf` objects</span>
+
+<span class="nf">class</span><span class="p">(</span><span class="n">frags_sp</span><span class="p">)</span>
+
+<span class="nf">class</span><span class="p">(</span><span class="n">frags_sf</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14704,40 +14761,59 @@ Projected CRS: WGS 84 / UTM zone 55S
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>ERROR while rich displaying an object: Error in loadNamespace(x): there is no package called ‘geojsonio’
 
-Traceback:
-1. FUN(X[[i]], ...)
-2. tryCatch(withCallingHandlers({
- .     if (!mime %in% names(repr::mime2repr)) 
- .         stop(&#34;No repr_* for mimetype &#34;, mime, &#34; in repr::mime2repr&#34;)
- .     rpr &lt;- repr::mime2repr[[mime]](obj)
- .     if (is.null(rpr)) 
- .         return(NULL)
- .     prepare_content(is.raw(rpr), rpr)
- . }, error = error_handler), error = outer_handler)
-3. tryCatchList(expr, classes, parentenv, handlers)
-4. tryCatchOne(expr, names, parentenv, handlers[[1L]])
-5. doTryCatch(return(expr), name, parentenv, handler)
-6. withCallingHandlers({
- .     if (!mime %in% names(repr::mime2repr)) 
- .         stop(&#34;No repr_* for mimetype &#34;, mime, &#34; in repr::mime2repr&#34;)
- .     rpr &lt;- repr::mime2repr[[mime]](obj)
- .     if (is.null(rpr)) 
- .         return(NULL)
- .     prepare_content(is.raw(rpr), rpr)
- . }, error = error_handler)
-7. repr::mime2repr[[mime]](obj)
-8. repr_geojson.SpatialPolygonsDataFrame(obj)
-9. repr_geojson(geojsonio::geojson_list(obj), ...)
-10. loadNamespace(x)
-11. withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-12. withOneRestart(expr, restarts[[1L]])
-13. doWithOneRestart(return(expr), restart)
-</pre>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+'SpatialPolygonsDataFrame'
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>'sf'</li><li>'data.frame'</li></ol>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-r"><pre><span></span><span class="c1"># Compare `sp` and `sf` objects</span>
+
+<span class="n">frags_sp</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">frags_sp</span><span class="p">)</span>
+
+<span class="nf">head</span><span class="p">(</span><span class="n">frags_sf</span><span class="p">)</span>
+</pre></div>
+
+     </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
 
 <div class="jp-OutputArea-child">
 
@@ -14766,39 +14842,26 @@ max values  :    S,   6 </pre>
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>ERROR while rich displaying an object: Error in loadNamespace(x): there is no package called ‘geojsonio’
 
-Traceback:
-1. FUN(X[[i]], ...)
-2. tryCatch(withCallingHandlers({
- .     if (!mime %in% names(repr::mime2repr)) 
- .         stop(&#34;No repr_* for mimetype &#34;, mime, &#34; in repr::mime2repr&#34;)
- .     rpr &lt;- repr::mime2repr[[mime]](obj)
- .     if (is.null(rpr)) 
- .         return(NULL)
- .     prepare_content(is.raw(rpr), rpr)
- . }, error = error_handler), error = outer_handler)
-3. tryCatchList(expr, classes, parentenv, handlers)
-4. tryCatchOne(expr, names, parentenv, handlers[[1L]])
-5. doTryCatch(return(expr), name, parentenv, handler)
-6. withCallingHandlers({
- .     if (!mime %in% names(repr::mime2repr)) 
- .         stop(&#34;No repr_* for mimetype &#34;, mime, &#34; in repr::mime2repr&#34;)
- .     rpr &lt;- repr::mime2repr[[mime]](obj)
- .     if (is.null(rpr)) 
- .         return(NULL)
- .     prepare_content(is.raw(rpr), rpr)
- . }, error = error_handler)
-7. repr::mime2repr[[mime]](obj)
-8. repr_geojson.sf(obj)
-9. repr_geojson(geojsonio::geojson_list(obj), ...)
-10. loadNamespace(x)
-11. withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-12. withOneRestart(expr, restarts[[1L]])
-13. doWithOneRestart(return(expr), restart)
-</pre>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
+<table class="dataframe">
+<caption>A data.frame: 6 × 2</caption>
+<thead>
+	<tr><th></th><th scope=col>size</th><th scope=col>rep</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>0</th><td>L</td><td>3</td></tr>
+	<tr><th scope=row>1</th><td>S</td><td>3</td></tr>
+	<tr><th scope=row>2</th><td>M</td><td>3</td></tr>
+	<tr><th scope=row>3</th><td>M</td><td>4</td></tr>
+	<tr><th scope=row>4</th><td>L</td><td>4</td></tr>
+	<tr><th scope=row>5</th><td>S</td><td>4</td></tr>
+</tbody>
+</table>
+
 </div>
+
 </div>
 
 <div class="jp-OutputArea-child">
@@ -14810,30 +14873,18 @@ Traceback:
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
 <table class="dataframe">
-<caption>A sf: 18 × 3</caption>
+<caption>A sf: 6 × 3</caption>
 <thead>
-	<tr><th scope=col>size</th><th scope=col>rep</th><th scope=col>geometry</th></tr>
-	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;POLYGON [m]&gt;</th></tr>
+	<tr><th></th><th scope=col>size</th><th scope=col>rep</th><th scope=col>geometry</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;POLYGON [m]&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><td>L</td><td>3</td><td>POLYGON ((719631.7 5894932,...</td></tr>
-	<tr><td>S</td><td>3</td><td>POLYGON ((719341.3 5894888,...</td></tr>
-	<tr><td>M</td><td>3</td><td>POLYGON ((719288.1 5894822,...</td></tr>
-	<tr><td>M</td><td>4</td><td>POLYGON ((718912.9 5894601,...</td></tr>
-	<tr><td>L</td><td>4</td><td>POLYGON ((719254.9 5894465,...</td></tr>
-	<tr><td>S</td><td>4</td><td>POLYGON ((719263.9 5894221,...</td></tr>
-	<tr><td>L</td><td>5</td><td>POLYGON ((719349.7 5894217,...</td></tr>
-	<tr><td>M</td><td>5</td><td>POLYGON ((719454.1 5893901,...</td></tr>
-	<tr><td>S</td><td>5</td><td>POLYGON ((719506.2 5893774,...</td></tr>
-	<tr><td>S</td><td>6</td><td>POLYGON ((719531.5 5893646,...</td></tr>
-	<tr><td>M</td><td>6</td><td>POLYGON ((719634.6 5893428,...</td></tr>
-	<tr><td>L</td><td>6</td><td>POLYGON ((719707.2 5893649,...</td></tr>
-	<tr><td>L</td><td>2</td><td>POLYGON ((719185.4 5895244,...</td></tr>
-	<tr><td>L</td><td>1</td><td>POLYGON ((718525.6 5895721,...</td></tr>
-	<tr><td>M</td><td>2</td><td>POLYGON ((718943.1 5895471,...</td></tr>
-	<tr><td>M</td><td>1</td><td>POLYGON ((718702.9 5895489,...</td></tr>
-	<tr><td>S</td><td>2</td><td>POLYGON ((718996.2 5895607,...</td></tr>
-	<tr><td>S</td><td>0</td><td>POLYGON ((718706.4 5895918,...</td></tr>
+	<tr><th scope=row>1</th><td>L</td><td>3</td><td>POLYGON ((719631.7 5894932,...</td></tr>
+	<tr><th scope=row>2</th><td>S</td><td>3</td><td>POLYGON ((719341.3 5894888,...</td></tr>
+	<tr><th scope=row>3</th><td>M</td><td>3</td><td>POLYGON ((719288.1 5894822,...</td></tr>
+	<tr><th scope=row>4</th><td>M</td><td>4</td><td>POLYGON ((718912.9 5894601,...</td></tr>
+	<tr><th scope=row>5</th><td>L</td><td>4</td><td>POLYGON ((719254.9 5894465,...</td></tr>
+	<tr><th scope=row>6</th><td>S</td><td>4</td><td>POLYGON ((719263.9 5894221,...</td></tr>
 </tbody>
 </table>
 
@@ -14848,13 +14899,14 @@ Traceback:
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="c1"># Going forward, let&#39;s use sf objects. I was trained with sp, but sf seems like the package for the future</span>
+<div class=" highlight hl-r"><pre><span></span><span class="c1"># Going forward, let&#39;s use sf objects. I was trained with `sp`, but `sf` seems like the package for the future</span>
 
 <span class="c1"># Plot sites</span>
 <span class="nf">plot</span><span class="p">(</span><span class="n">sites_sf</span><span class="p">)</span> 
+
 <span class="c1"># Note how the plots are divided into the different attributes for this spatial object</span>
 </pre></div>
 
@@ -15944,11 +15996,12 @@ height=420
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="nf">plot</span><span class="p">(</span><span class="nf">st_geometry</span><span class="p">(</span><span class="n">sites_sf</span><span class="p">))</span>
-<span class="c1"># If you specify only the geometry of the spatial object, then one plot of black points prints</span>
+<div class=" highlight hl-r"><pre><span></span><span class="c1"># If you specify only the geometry of the spatial object, then one plot of black points prints</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="nf">st_geometry</span><span class="p">(</span><span class="n">sites_sf</span><span class="p">))</span>
 </pre></div>
 
      </div>
@@ -16379,10 +16432,10 @@ height=420
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="c1"># Plot fragment boundaries and sites</span>
+<div class=" highlight hl-r"><pre><span></span><span class="c1"># Plot fragment boundaries </span>
 <span class="nf">plot</span><span class="p">(</span><span class="n">frags_sf</span><span class="p">)</span>
 </pre></div>
 
@@ -17535,7 +17588,7 @@ height=420
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="c1"># Specify only the geometry of the fragments</span>
@@ -18063,7 +18116,7 @@ height=420
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="c1">#Plot sites and fragment boundaries together</span>
@@ -18594,7 +18647,7 @@ height=420
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="c1"># Troubleshoot: think to CRS first. </span>
@@ -18666,15 +18719,26 @@ height=420
 </ul>
 </li>
 <li>Two common CRS: UTM (projected) and WGS84 (geographic)</li>
-<li>There is so much more to CRS, but this is all we'll cover</li>
+</ul>
+
+</div>
+</div></section></section><section><section>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Brief-glimpse-at-Coordinate-Reference-Systems">Brief glimpse at Coordinate Reference Systems<a class="anchor-link" href="#Brief-glimpse-at-Coordinate-Reference-Systems">&#182;</a></h3><ul>
+<li>UTM Zones across USA. CO is in UTM Zone 13N </li>
+<li>Site coordinates at Wog Wog are in UTM Zone 55S</li>
 </ul>
 <p><img src="figures/utm-usa.png" alt="utm-usa"></p>
+<ul>
+<li>There is so much more to CRS, but this is all we'll cover</li>
+</ul>
 
 </div>
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="c1"># Transform fragments object to have same CRS as sites</span>
@@ -19311,11 +19375,7 @@ height=420
 <h3 id="Mapping">Mapping<a class="anchor-link" href="#Mapping">&#182;</a></h3><ul>
 <li>This map is sufficient for a basic visualization, but we can do better.</li>
 <li>Our objective is to create an interactive map so we can explore our field site more easily. Now that we have our spatial data loaded in R and formatted properly, we can start building a map. </li>
-<li><p>There are many ways to plot interactive maps, like <code>plotly</code> or <code>leaflet</code>. We will use <code>tmap</code>, which isn't compatible in jupyter notebook.</p>
-</li>
-<li><p>AIS how to share a tmap map?</p>
-</li>
-<li>AIS how to put orthomosaic in the background</li>
+<li>There are many ways to plot interactive maps, like <code>plotly</code> or <code>leaflet</code>. We will use <code>tmap</code>, which isn't compatible in jupyter notebook.</li>
 </ul>
 <hr>
 
@@ -19323,7 +19383,7 @@ height=420
 </div></section></section><section><section><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-r"><pre><span></span><span class="c1"># Embed your map in a webpage: </span>
@@ -19335,54 +19395,27 @@ height=420
 </div>
 </div>
 
-</div>
+</div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Supporting-cast">Supporting cast<a class="anchor-link" href="#Supporting-cast">&#182;</a></h3><ul>
+<h3 id="Extra-tips">Extra tips<a class="anchor-link" href="#Extra-tips">&#182;</a></h3><ul>
 <li>Visualize your data in a GIS as a sanity check before plotting in R or doing analyses. I recommend QGIS since it's open source. Also, store all your data in one GIS project.</li>
 <li>Create spatial data online using <a href="https://geojson.io/">geojson.io</a> </li>
 <li>If you need to convert your data into a crazy CRS, try <a href="https://www.vdatum.noaa.gov/">NOAA's Vertical Datum tool</a></li>
-<li>Great resource for geospatial data handling and analysis: EarthDataScience - based out of CU's Earth Lab</li>
+<li>Create animated maps where data changes through time using <a href="https://geocompr.robinlovelace.net/adv-map.html">this resource</a></li>
+<li>Great resource for geospatial data handling and analysis: <a href="https://www.earthdatascience.org/">EarthDataScience</a>. It is based out of CU's Earth Lab and has spatial data lessons in both R and Python.</li>
 <li>For students, the university library often has a spatial librarian. Phil White at CU is great.</li>
 <li>As always, stackoverflow and your spatially-oriented friends are great resources</li>
+<li><a href="https://medium.com/learning-machine-learning/present-your-data-science-projects-with-jupyter-slides-75f20735eb0f">The guide</a> I used for using Jupyter Notebook slides</li>
 </ul>
-
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Questions?">Questions?<a class="anchor-link" href="#Questions?">&#182;</a></h3><p>AIS INSERT PRETTY MAP HERE</p>
-<p><a href="https://github.com/annaspiers/spatial-data_mapping_RLadies">https://github.com/annaspiers/spatial-data_mapping_RLadies</a></p>
 
 </div>
 </div></section></section><section><section>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>To do</p>
-<ul>
-<li>fill out learning objectives</li>
-<li>add photos throughout and generally make it more interactive</li>
-<li>check out leah's corresponding lessons for images</li>
-<li>freatuer <a href="https://www.earthdatascience.org/">https://www.earthdatascience.org/</a></li>
-<li>format slides so information is visible on slides: spatial-data_mapping_RLadies anna$ jupyter nbconvert tutorial.ipynb --to slides --post serve<ul>
-<li><a href="https://medium.com/learning-machine-learning/present-your-data-science-projects-with-jupyter-slides-75f20735eb0f">https://medium.com/learning-machine-learning/present-your-data-science-projects-with-jupyter-slides-75f20735eb0f</a></li>
-</ul>
-</li>
-<li>write README. make clear that the data were created for demonstration only and not for scientific use</li>
-</ul>
-<ol>
-<li>Work through some advanced mapping techniques to show the range of versatility of mapping in R. There are plenty of examples online that offer a few cookie cutter ways to map your data basically, but showing some cool expansions or extra features that are harder to find would be a good use of time  <ul>
-<li><strong>Cool examples of the range of versatility, harder to find stuff, maybe some sticking points that took you a while to work through and the solution.</strong></li>
-</ul>
-</li>
-</ol>
-<h5 id="Relevant-topics-that-I-will-not-cover">Relevant topics that I will not cover<a class="anchor-link" href="#Relevant-topics-that-I-will-not-cover">&#182;</a></h5><ul>
-<li>conversion from proj4 to prO(theta)4 - when and why?</li>
-<li>working with Raster data (this will involve only vector data)</li>
-<li>QGIS stuff... how to share QGIS data? </li>
-<li>File naming conventions - agreed upon by team or standard (e.g., remote sensing data: L0, L1, etc.)</li>
-<li>best practices in storing data (save large data files locally)</li>
-</ul>
+<h3 id="Questions?">Questions?<a class="anchor-link" href="#Questions?">&#182;</a></h3><p><a href="https://github.com/annaspiers/spatial-data_mapping_RLadies">https://github.com/annaspiers/spatial-data_mapping_RLadies</a></p>
+<p>While we're at it, another cool map...
+<img src="figures/worldhappiness.png" alt="happy"></p>
 
 </div>
 </div></section></section>
